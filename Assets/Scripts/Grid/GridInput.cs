@@ -3,9 +3,12 @@ using UnityEngine;
 public class GridInput : MonoBehaviour
 {
     public Camera sceneCamera;
-    private Vector3 m_lastPosition;
+    private Vector3 lastPosition;
     public LayerMask groundLayerMask;
     public int touchCount;
+    public GameObject lastTouchedGameObject;
+    public TargetMarker targetMarker;
+
     public Vector3 GetSelectedMapPosition()
     {
         Vector3 touchPos = Vector3.zero;
@@ -22,28 +25,38 @@ public class GridInput : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayerMask))
             {
-                m_lastPosition = hit.point;
-            }
-            else
-            {
-                Debug.LogWarning("Raycast did not hit anything!");
+                lastPosition = hit.point;
+                GameObject interactedObject = hit.collider.gameObject;
+
+                // Eğer etkileşimli obje ile ilk defa karşılaşıyorsak
+                if (interactedObject.CompareTag("Interactable") && interactedObject != lastTouchedGameObject)
+                {
+                    lastTouchedGameObject = interactedObject;
+                    Collider touchedObjectCollider = lastTouchedGameObject.GetComponent<Collider>();
+                    Collider targetCollider = targetMarker.targetMarker.GetComponent<Collider>();
+                    targetCollider.transform.localScale = touchedObjectCollider.transform.localScale;
+                    
+                    MeshFilter touchedObjectFilter = lastTouchedGameObject.GetComponent<MeshFilter>();
+                    MeshFilter targetFilter = targetMarker.targetMarker.GetComponent<MeshFilter>();
+                    targetFilter.mesh = touchedObjectFilter.mesh;
+                }
             }
         }
 
-        return m_lastPosition;
+        return lastPosition;
     }
 
     public bool GetPlacementInput()
     {
-     if (Input.touchCount > 0)
-    {
-        Touch touch = Input.GetTouch(0);
-        if (touch.phase == TouchPhase.Began)
+        if (Input.touchCount > 0)
         {
-            touchCount += 1; 
-            return true; 
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+            {
+                touchCount += 1;
+                return true;
+            }
         }
-    }
-    return false;
+        return false;
     }
 }
