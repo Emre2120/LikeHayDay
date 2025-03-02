@@ -8,7 +8,8 @@ public class TargetMarker : MonoBehaviour
     public string markerID;
     public bool puttable = false;
     public GameObject targetMarker;
-
+    public bool seedable;
+    
     void Update()
     {
         CheckObjectBelow();
@@ -37,7 +38,7 @@ public class TargetMarker : MonoBehaviour
             if (hitPlaceInfo != null)
             {
                 string hitObjectID = hitPlaceInfo.placeID;
-                Debug.Log("Raycast hit object ID: " + hitObjectID);
+                seedable = hitPlaceInfo.seedable;
                 if (hitObjectID == markerID)
                 {
                     puttable = true;

@@ -3,22 +3,21 @@ using UnityEngine;
 public class GridInput : MonoBehaviour
 {
     public Camera sceneCamera;
-    private Vector3 lastPosition;
     public LayerMask groundLayerMask;
-    public int touchCount;
-    public GameObject lastTouchedGameObject;
+    public LayerMask interactableLayerMask;
     public TargetMarker targetMarker;
+
+    private Vector3 lastPosition;
+    public GameObject lastTouchedGameObject;
+    public int touchedCount;
 
     public Vector3 GetSelectedMapPosition()
     {
-        Vector3 touchPos = Vector3.zero;
-
+       if (sceneCamera == null){ return Vector3.zero;}
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            touchPos = touch.position;
-
-            Ray ray = sceneCamera.ScreenPointToRay(touchPos);
+            Ray ray = sceneCamera.ScreenPointToRay(touch.position);
             RaycastHit hit;
 
             Debug.DrawRay(ray.origin, ray.direction * 100, Color.red);
@@ -26,24 +25,28 @@ public class GridInput : MonoBehaviour
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayerMask))
             {
                 lastPosition = hit.point;
-                GameObject interactedObject = hit.collider.gameObject;
+            }
 
-                // Eğer etkileşimli obje ile ilk defa karşılaşıyorsak
-                if (interactedObject.CompareTag("Interactable") && interactedObject != lastTouchedGameObject)
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, interactableLayerMask))
+            {
+                if (hit.collider.gameObject != lastTouchedGameObject)
                 {
-                    lastTouchedGameObject = interactedObject;
-                    Collider touchedObjectCollider = lastTouchedGameObject.GetComponent<Collider>();
-                    Collider targetCollider = targetMarker.targetMarker.GetComponent<Collider>();
-                    targetCollider.transform.localScale = touchedObjectCollider.transform.localScale;
-                    
-                    MeshFilter touchedObjectFilter = lastTouchedGameObject.GetComponent<MeshFilter>();
-                    MeshFilter targetFilter = targetMarker.targetMarker.GetComponent<MeshFilter>();
-                    targetFilter.mesh = touchedObjectFilter.mesh;
+                    lastTouchedGameObject = hit.collider.gameObject;
+                    PlaceInfo touchedInfo = lastTouchedGameObject.GetComponent<PlaceInfo>();
+                    targetMarker.targetMarker.transform.localScale = new Vector3(touchedInfo.markerSizeX, touchedInfo.markerSizeY, touchedInfo.markerSizeZ);
+                    targetMarker.markerID = touchedInfo.placeID;
+                    if (lastTouchedGameObject.TryGetComponent<Seed>(out Seed seedInfo)) { ObjectInfoWriter.instance.WriteRemainingTime(seedInfo.remainingTime); }
+                    HandleTouchedObject();
                 }
             }
         }
 
         return lastPosition;
+    }
+
+    void HandleTouchedObject()
+    {
+
     }
 
     public bool GetPlacementInput()
@@ -53,7 +56,7 @@ public class GridInput : MonoBehaviour
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
-                touchCount += 1;
+                touchedCount++;
                 return true;
             }
         }

@@ -14,22 +14,21 @@ private void Start()
     targetMarker = marker.targetMarker;
 }
 
-private void Update()
+private void LateUpdate()
 {
-
     SelectEditMode();
     HandleMarkerPlace();
 }
 
 void SelectEditMode()
 {
-  if (gridInput.GetPlacementInput() && marker.puttable == true && gridInput.touchCount > 1 && seeding == true && marker.touching == false)
- {
+  if (gridInput.GetPlacementInput() && marker.puttable == true && gridInput.touchedCount > 1 && seeding == true && marker.touching == false && marker.seedable == true)
+ {   
       Instantiate(seedPlant, targetMarker.transform.position, Quaternion.identity);
  }
- else if (seeding == false && gridInput.GetPlacementInput() && marker.puttable == true && gridInput.touchCount > 1 && marker.touching == false)
- {
-        gridInput.lastTouchedGameObject.transform.position = targetMarker.transform.position;
+ else if (seeding == false && gridInput.GetPlacementInput() && marker.puttable == true && gridInput.touchedCount > 1 && marker.touching == false)
+ {     
+    if(gridInput.lastTouchedGameObject!= null){ gridInput.lastTouchedGameObject.transform.position = targetMarker.transform.position;}
  }
 }
 
