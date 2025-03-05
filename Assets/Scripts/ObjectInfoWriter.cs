@@ -1,38 +1,62 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+
 public class ObjectInfoWriter : MonoBehaviour
 {
-  public static ObjectInfoWriter instance;
-  public TextMeshProUGUI remainingTimeText;
-  public int waitTime;
+    public static ObjectInfoWriter instance { get; private set; }
+    public TextMeshProUGUI ObjectInfoText;
+    public TextMeshProUGUI remainingTimeText;
+    public int waitTime;
+    private Coroutine countdownCoroutine;
+
     private void Awake()
     {
-        if (instance != null && instance != this)
+        if (instance == null)
         {
-            Destroy(gameObject);
+            instance = this;
         }
         else
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            Destroy(gameObject);
         }
     }
- 
-        public void WriteRemainingTime(int remainingTime)
+
+    public void WriteObjectInfo(string objectInfo)
+    {
+       ObjectInfoText.text = objectInfo;
+    }
+
+    public void WriteRemainingTime(int remainingTime)
     {
         waitTime = remainingTime;
-        StartCoroutine(CountdownTimer());
+        Debug.Log(remainingTime);
+        if (countdownCoroutine != null) 
+        {
+            StopCoroutine(countdownCoroutine); 
+        }
+
+        if (remainingTime <= 1)
+        {
+            remainingTimeText.text = "Done";
+        }
+        else
+        {
+            countdownCoroutine = StartCoroutine(CountdownTimer()); 
+        }
     }
 
     IEnumerator CountdownTimer()
     {
         while (waitTime > 0)
         {
+            remainingTimeText.text = "REMAINING TIME : " + waitTime.ToString();
             yield return new WaitForSeconds(1);
             waitTime--;
-            WriteRemainingTime(waitTime);
         }
+
+        remainingTimeText.text = "Done";
+        Debug.Log("ready !");
     }
-  
 }
+ 

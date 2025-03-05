@@ -13,7 +13,7 @@ public class GridInput : MonoBehaviour
 
     public Vector3 GetSelectedMapPosition()
     {
-       if (sceneCamera == null){ return Vector3.zero;}
+        if (sceneCamera == null) { return Vector3.zero; }
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -32,21 +32,23 @@ public class GridInput : MonoBehaviour
                 if (hit.collider.gameObject != lastTouchedGameObject)
                 {
                     lastTouchedGameObject = hit.collider.gameObject;
-                    PlaceInfo touchedInfo = lastTouchedGameObject.GetComponent<PlaceInfo>();
-                    targetMarker.targetMarker.transform.localScale = new Vector3(touchedInfo.markerSizeX, touchedInfo.markerSizeY, touchedInfo.markerSizeZ);
-                    targetMarker.markerID = touchedInfo.placeID;
-                    if (lastTouchedGameObject.TryGetComponent<Seed>(out Seed seedInfo)) { ObjectInfoWriter.instance.WriteRemainingTime(seedInfo.remainingTime); }
                     HandleTouchedObject();
                 }
             }
         }
-
         return lastPosition;
     }
 
     void HandleTouchedObject()
     {
-
+        PlaceInfo touchedInfo = lastTouchedGameObject.GetComponent<PlaceInfo>();
+        targetMarker.targetMarker.transform.localScale = new Vector3(touchedInfo.markerSizeX, touchedInfo.markerSizeY, touchedInfo.markerSizeZ);
+        targetMarker.markerID = touchedInfo.placeID;
+        if (lastTouchedGameObject.TryGetComponent<ObjectInfo>(out ObjectInfo objectInfo))
+        {
+            ObjectInfoWriter.instance.WriteRemainingTime(objectInfo.remainingTime);
+            ObjectInfoWriter.instance.WriteObjectInfo(objectInfo.info);
+        }
     }
 
     public bool GetPlacementInput()

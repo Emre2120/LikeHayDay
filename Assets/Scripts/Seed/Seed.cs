@@ -1,27 +1,26 @@
 using System.Collections;
 using UnityEngine;
 
-public class Seed : MonoBehaviour
+public abstract class Seed : MonoBehaviour
 {
-    public int growUpTime;
+ public int growUpTime;
     public GameObject[] growUpLevels;
     public Transform spawnPoint;
-
     [SerializeField] int growUpLevel;
     private float slicedWaitTime;
     private GameObject currentPlantInstance;
-    public int remainingTime;
+    public bool ripeCrop;
+    public ObjectInfo objectInfo;
 
     private void Start()
     {
         if (growUpLevels == null || growUpLevels.Length == 0)
         {
-            Debug.Log("Büyüme aşamaları dizisi boş veya atanmamış");
             return;
         }
 
         slicedWaitTime = growUpTime / growUpLevels.Length +1;
-        remainingTime = growUpTime;
+        objectInfo.remainingTime = growUpTime;
         GrowToNextLevel();
         StartCoroutine(Grow());
         StartCoroutine(CalcuateRemainingTime());
@@ -39,11 +38,12 @@ public class Seed : MonoBehaviour
     
     IEnumerator CalcuateRemainingTime()
     {
-        while (growUpLevel < growUpLevels.Length)
+        while (objectInfo.remainingTime>0)
         {
             yield return new WaitForSeconds(1);
-            remainingTime -= 1;
+            objectInfo.remainingTime -= 1;
         }
+        ripeCrop = true;
     }
 
     private void GrowToNextLevel()
@@ -60,5 +60,8 @@ public class Seed : MonoBehaviour
 
         growUpLevel++;
     }
-
+    public virtual void Collect()
+    {
+      
+    }
 }

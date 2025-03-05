@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4378662638633491060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3053912851671450226}
+  - component: {fileID: 8586863332704705439}
+  - component: {fileID: 2241135491242524249}
+  - component: {fileID: 816803418630542313}
+  - component: {fileID: -6544014190923157450}
+  m_Layer: 7
+  m_Name: WheatSeed
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3053912851671450226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378662638633491060}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8586863332704705439
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378662638633491060}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2241135491242524249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378662638633491060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda88e53f3d9d774ea9ea4f2b266f999, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectName: 
+  placeID: infield
+  markerSizeX: 2
+  markerSizeY: 2
+  markerSizeZ: 2
+  seedable: 0
+--- !u!114 &816803418630542313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378662638633491060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf0bbc3617a2efe49b79d6329745475c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  growUpTime: 20
+  growUpLevels:
+  - {fileID: 3675022230891168345, guid: bf8794c1742ac7c4abfe12b1d731b6da, type: 3}
+  - {fileID: 6715617939062429626, guid: 37fdc98f7ac31af4496889f85466e8b4, type: 3}
+  - {fileID: 7975844359947163235, guid: fdf33558684a03748bc3e478a8af7cb2, type: 3}
+  - {fileID: 471270122241890733, guid: f371951a06375b84382a276f669956ea, type: 3}
+  spawnPoint: {fileID: 3053912851671450226}
+  growUpLevel: 0
+  ripeCrop: 0
+  objectInfo: {fileID: -6544014190923157450}
+  seedYield: 1
+--- !u!114 &-6544014190923157450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4378662638633491060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0cfadbbe24b23e4b90022ef409ed0fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: 'BUGDAY (VERIM :  1)'
+  remainingTime: 20

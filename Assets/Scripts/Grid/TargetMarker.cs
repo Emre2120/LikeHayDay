@@ -4,25 +4,57 @@ using UnityEngine;
 public class TargetMarker : MonoBehaviour
 {
     public bool touching = false;
-    public PlaceInfo placeInfo;
     public string markerID;
     public bool puttable = false;
     public GameObject targetMarker;
     public bool seedable;
+    public Material blueMaterial;
+    public Material redMaterial;
+    private Renderer objRenderer;
+    public MeshRenderer meshRenderer;
     
+    void Start()
+    {
+        objRenderer = GetComponent<Renderer>();
+    }
     void Update()
     {
         CheckObjectBelow();
+        HandlePlaceMaterial();
+        HandleEditModeRequariments();
     }
-
+    
     void OnTriggerEnter(Collider other)
     {
-        touching = true;
+        if(!other.gameObject.CompareTag("ground")){touching = true;}
     }
 
     void OnTriggerExit(Collider other)
     {
         touching = false;
+    }
+
+    void HandlePlaceMaterial()
+    {
+       if(touching == true || puttable == false )
+      {
+         objRenderer.material = redMaterial;
+      }
+      if(touching == false && puttable == true )
+      {
+         objRenderer.material = blueMaterial;
+      }
+    }
+    
+    void HandleEditModeRequariments()
+    {
+        if(EditModeHandler.instance.editMode  == EditModeHandler.EditMode.farming ||EditModeHandler.instance.editMode  == EditModeHandler.EditMode.editing)
+        {
+          meshRenderer.enabled = true;
+        }else
+        {
+          meshRenderer.enabled = false;
+        }
     }
 
     void CheckObjectBelow()
